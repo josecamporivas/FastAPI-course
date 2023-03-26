@@ -23,7 +23,7 @@ async def root():
 
 # path parameters
 # example URL: http://localhost:8000/users/5
-@app.get("/users/{user_id}")
+@app.get("/user/{user_id}")
 async def get_user(user_id: int):
     try:
         user = search_user(user_id)[0]
@@ -44,9 +44,9 @@ async def filter_age_users(max_age: int = 50):
 async def post_user(user: User):
     if len(search_user(user.id) == 0):
         users_db.append(user)
+        return user
     else:
         return {"error": "Ya existe un usuario con ese id"}
-
 
 def search_user(id: int):
     return list(filter(lambda user: user.id == id, users_db))

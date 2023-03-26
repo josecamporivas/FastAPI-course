@@ -14,5 +14,5 @@ async def root():
     return {"message": "Hello World"}
 ```
 
-### Run live server from file *main.py*
-`uvicorn main:app --reload`
+### Run live server from file *getting-started.py*
+`uvicorn getting-started:app --reload`
