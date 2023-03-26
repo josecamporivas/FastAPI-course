@@ -48,5 +48,31 @@ async def post_user(user: User):
     else:
         return {"error": "Ya existe un usuario con ese id"}
 
+# put method
+@app.put("/user/")
+async def modify_user(user: User):
+    found = False
+    for index,user_db in enumerate(users_db):
+        if user_db.id == user.id:
+            users_db[index] = user
+            found = True
+    
+    if not found:
+        return {"error": "No existe ese usuario"}
+    
+    return user
+
+# delete method
+@app.delete("/user/{user_id}")
+async def get_user(user_id: int):
+    found = False
+    for index,user_db in enumerate(users_db):
+        if user_db.id == user_id:
+            del users_db[index]
+            found = True
+    
+    if not found:
+        return {"error": "No existe ese usuario"}
+
 def search_user(id: int):
     return list(filter(lambda user: user.id == id, users_db))
