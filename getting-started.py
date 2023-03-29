@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -40,13 +40,14 @@ async def filter_age_users(max_age: int = 50):
     return {"max_age": max_age, "user": users_filtered}
 
 # post method
-@app.post("/user/")
+@app.post("/user/", response_model=User, status_code=201)
 async def post_user(user: User):
-    if len(search_user(user.id) == 0):
+    if len(search_user(user.id)) == 0:
         users_db.append(user)
         return user
     else:
-        return {"error": "Ya existe un usuario con ese id"}
+        raise HTTPException(status_code=404, detail="Ya existe un usuario con ese id")
+        #return {"error": "Ya existe un usuario con ese id"}
 
 # put method
 @app.put("/user/")
