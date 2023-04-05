@@ -16,3 +16,10 @@ async def root():
 
 ### Run live server from file *getting-started.py*
 `uvicorn getting-started:app --reload`
+
+### Required dependencies for JWT Auth
+`pip install "python-jose[cryptography]"`
+`pip install "passlib[bcrypt]"`
+
+### Command to generate SECRET
+`openssl rand -hex 32`
