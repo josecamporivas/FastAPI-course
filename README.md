@@ -23,3 +23,17 @@ async def root():
 
 ### Command to generate SECRET
 `openssl rand -hex 32`
+
+
+# MongoDB
+To install MongoDB, you have to go [here](https://www.mongodb.com/docs/manual/administration/install-community/) and follow the steps.
+
+### Run a local instance of MongoDB
+```bash
+mkdir data
+cd ./data
+mongod --dbpath .
+``` 
+
+### Requiered dependecy to connect Python and MongoDB
+`pip install pymongo`
