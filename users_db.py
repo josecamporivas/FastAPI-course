@@ -10,7 +10,7 @@ app = FastAPI()
 
 @app.get("/userdb", response_model=list[User])
 async def get_users():
-    return users_schema(db_client.local.users.find())
+    return users_schema(db_client.users.find())
 
 @app.get("/userdb/{user_id}")
 async def get_user(user_id: str):
@@ -25,9 +25,9 @@ async def post_user(user: User):
     user_dict = dict(user)
     del user_dict["id"]
 
-    id = db_client.local.users.insert_one(user_dict).inserted_id
+    id = db_client.users.insert_one(user_dict).inserted_id
     
-    inserted_user = user_schema(db_client.local.users.find_one({"_id": id}))
+    inserted_user = user_schema(db_client.users.find_one({"_id": id}))
 
     return User(**inserted_user)
 
@@ -38,7 +38,7 @@ async def modify_user(user: User):
     del user_dict["id"]
 
     try:
-        db_client.local.users.find_one_and_replace({'_id': ObjectId(user.id)}, user_dict)
+        db_client.users.find_one_and_replace({'_id': ObjectId(user.id)}, user_dict)
     except:
         return {"error": "No existe ese usuario"}
         
@@ -47,14 +47,14 @@ async def modify_user(user: User):
 # delete method
 @app.delete("/userdb/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def get_user(user_id: str):
-    found = db_client.local.users.find_one_and_delete({'_id':ObjectId(user_id)})
+    found = db_client.users.find_one_and_delete({'_id':ObjectId(user_id)})
     
     if not found:
         return {"error": "No existe ese usuario"}
 
 def search_user(field:str, value):
     try:
-        user = user_schema(db_client.local.users.find_one({field: value}))
+        user = user_schema(db_client.users.find_one({field: value}))
         return User(**user)
     except:
         return {'error': 'El usuario no se ha encontrado'}
